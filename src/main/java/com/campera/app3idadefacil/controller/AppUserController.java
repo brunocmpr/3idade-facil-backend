@@ -3,6 +3,7 @@ package com.campera.app3idadefacil.controller;
 import com.campera.app3idadefacil.model.datatransfer.dto.AppUserDto;
 import com.campera.app3idadefacil.model.datatransfer.form.AppUserForm;
 import com.campera.app3idadefacil.service.AppUserService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ public class AppUserController {
     AppUserService service;
 
     @PostMapping
+    @Operation(summary = "Register new app user")
     public ResponseEntity<AppUserDto> register(AppUserForm form){
         try {
             AppUserDto appUserDto = service.register(form);
