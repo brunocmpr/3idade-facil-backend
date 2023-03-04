@@ -9,17 +9,27 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
-public class Authority implements GrantedAuthority{
+public enum Authority implements GrantedAuthority {
+    SYSADMIN("SYSADMIN"),
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  @Getter @Setter
-    private Long id;
-    @Getter @Setter
-    private String name;
+    ACCOUNT_ADMIN("ACCOUNT_ADMIN"),
+    CAREGIVER("CAREGIVER"),
+    PATIENT("PATIENT"),
+    ;
+
+    private final String name;
+
+    Authority(final String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
     @Override
     public String getAuthority() {
-        return name;
+        return name();
     }
 }
