@@ -32,9 +32,8 @@ public class AppUser implements UserDetails {
     private String email;
     @Setter
     private String hashedPassword;
-    @Transient  @Setter
-    private String rawPassword;
-    @ElementCollection(fetch = FetchType.EAGER) @CollectionTable(name = "user_authority_mapping" )  @Getter
+    @ElementCollection(fetch = FetchType.EAGER) @CollectionTable(name = "user_authority_mapping" )
+    @Enumerated(EnumType.STRING)  @Getter
     private Set<Authority> authorityList = EnumSet.noneOf(Authority.class);
 
     public AppUser(String firstName, String lastName, String countryCode, String areaCode, String phoneNumber,
