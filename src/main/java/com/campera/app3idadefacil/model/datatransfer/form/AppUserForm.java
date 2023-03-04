@@ -21,7 +21,7 @@ public class AppUserForm {
     private String phoneNumber;
     @NotNull @NotEmpty @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")  @Getter	@Setter
     private String email;
-    @NotNull @NotEmpty @Pattern(regexp = "^[a-zA-Z\\d~`´!@#$%^&*()_\\-+={[}\\]\\|\\:;\"'<,>.?\\/]{6,40}$")
+    @NotNull @NotEmpty @Pattern(regexp = "^[a-zA-Z\\d~`´!@#$%^&*()_\\-+={\\[}\\]\\|\\:;\"'<,>.?\\/]{6,40}$")
     @Size(min = 1, max = 40) @Getter @Setter
     private String rawPassword;
 }
