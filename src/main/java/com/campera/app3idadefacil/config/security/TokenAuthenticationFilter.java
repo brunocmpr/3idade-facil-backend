@@ -1,7 +1,7 @@
 package com.campera.app3idadefacil.config.security;
 
 import com.campera.app3idadefacil.model.AppUser;
-import com.campera.app3idadefacil.repository.UserRepository;
+import com.campera.app3idadefacil.repository.AppUserRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -15,12 +15,12 @@ import java.io.IOException;
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private TokenService tokenService;
-    private UserRepository userRepository;
+    private AppUserRepository appUserRepository;
 
-    public TokenAuthenticationFilter(TokenService tokenService, UserRepository userRepository) {
+    public TokenAuthenticationFilter(TokenService tokenService, AppUserRepository appUserRepository) {
         super();
         this.tokenService = tokenService;
-        this.userRepository = userRepository;
+        this.appUserRepository = appUserRepository;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private void authenticateClient(String token) {
         Long userId = tokenService.extractSubjectFromToken(token);
-        AppUser user = this.userRepository.findById(userId).get();
+        AppUser user = this.appUserRepository.findById(userId).get();
         UsernamePasswordAuthenticationToken userPwAuthToken = new UsernamePasswordAuthenticationToken(
                 user, null , user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(userPwAuthToken);
