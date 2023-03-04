@@ -1,7 +1,7 @@
 package com.campera.app3idadefacil.config.security;
 
 import com.campera.app3idadefacil.model.AppUser;
-import com.campera.app3idadefacil.repository.UserRepository;
+import com.campera.app3idadefacil.repository.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,7 +14,7 @@ import java.util.Optional;
 public class AuthService implements UserDetailsService {
 
     @Autowired
-    private UserRepository repository;
+    private AppUserRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
