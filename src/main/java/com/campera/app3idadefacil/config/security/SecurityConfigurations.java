@@ -15,6 +15,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.servlet.Filter;
+
 @EnableWebSecurity
 @Configuration
 public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
@@ -40,8 +42,8 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(
-                        new TokenAuthenticationFilter(
-                                tokenService, userRepository), UsernamePasswordAuthenticationFilter.class
+                        new TokenAuthenticationFilter(tokenService, userRepository),
+                        UsernamePasswordAuthenticationFilter.class
                 );
     }
 

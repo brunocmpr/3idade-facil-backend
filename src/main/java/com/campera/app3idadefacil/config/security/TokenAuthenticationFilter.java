@@ -25,7 +25,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+            throws IOException, ServletException {
         String token = extractTokenFromHttpRequest(request);
         boolean tokenValid = tokenService.isTokenValid(token);
         if(tokenValid) {
@@ -49,5 +49,4 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         }
         return token.substring(7, token.length());
     }
-
 }
