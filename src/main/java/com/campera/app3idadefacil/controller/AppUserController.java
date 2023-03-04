@@ -7,8 +7,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/appuser")
@@ -18,7 +21,7 @@ public class AppUserController {
 
     @PostMapping
     @Operation(summary = "Register new app user")
-    public ResponseEntity<AppUserDto> register(AppUserForm form){
+    public ResponseEntity<AppUserDto> register(@RequestBody @Valid AppUserForm form){
         try {
             AppUserDto appUserDto = service.register(form);
             return ResponseEntity.ok(appUserDto);
