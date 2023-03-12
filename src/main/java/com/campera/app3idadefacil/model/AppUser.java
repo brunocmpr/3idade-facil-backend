@@ -22,12 +22,6 @@ public class AppUser implements UserDetails {
     private String firstName;
     @Getter @Setter
     private String lastName;
-    @Getter @Setter
-    private String countryCode;
-    @Getter @Setter
-    private String areaCode;
-    @Getter @Setter
-    private String phoneNumber;
     @Getter	@Setter
     private String email;
     @Setter
@@ -36,13 +30,9 @@ public class AppUser implements UserDetails {
     @Enumerated(EnumType.STRING)  @Getter
     private Set<Authority> authorityList = EnumSet.noneOf(Authority.class);
 
-    public AppUser(String firstName, String lastName, String countryCode, String areaCode, String phoneNumber,
-                   String email, String hashedPassword){
+    public AppUser(String firstName, String lastName, String email, String hashedPassword){
         this.firstName = firstName;
         this.lastName = lastName;
-        this.countryCode = countryCode;
-        this.areaCode = areaCode;
-        this.phoneNumber = phoneNumber;
         this.email = email;
         this.hashedPassword = hashedPassword;
     }
