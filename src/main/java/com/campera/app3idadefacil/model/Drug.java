@@ -23,4 +23,7 @@ public class Drug {
     @Enumerated(EnumType.STRING)
     @Column(name = "posologyType")
     private PosologyType posologyType;
+
+    @OneToOne(mappedBy = "drug")
+    private UniformPosology uniformPosology;
 }
