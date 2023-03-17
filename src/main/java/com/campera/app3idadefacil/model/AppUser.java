@@ -12,19 +12,25 @@ import java.util.*;
 
 @Entity
 @NoArgsConstructor
+@Table(name = "app_user")
 public class AppUser implements UserDetails {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  @Getter @Setter
+    @Column(name = "id")
     private Long id;
     @Getter @Setter
+    @Column(name = "first_name")
     private String firstName;
     @Getter @Setter
+    @Column(name = "last_name")
     private String lastName;
     @Getter	@Setter
+    @Column(name = "email")
     private String email;
     @Setter
+    @Column(name = "hashed_password")
     private String hashedPassword;
     @ElementCollection(fetch = FetchType.EAGER) @CollectionTable(name = "user_authority_mapping" )
     @Enumerated(EnumType.STRING)  @Getter
