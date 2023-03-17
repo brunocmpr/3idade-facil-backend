@@ -13,12 +13,6 @@ public class AppUserDto {
     private String firstName;
     @Getter @Setter
     private String lastName;
-    @Getter @Setter
-    private String countryCode;
-    @Getter @Setter
-    private String areaCode;
-    @Getter @Setter
-    private String phoneNumber;
     @Getter	@Setter
     private String email;
 }
