@@ -27,6 +27,8 @@ public class Drug {
 
     @OneToOne(mappedBy = "drug")
     private UniformPosology uniformPosology;
+    @OneToOne(mappedBy = "drug")
+    private WeeklyPosology weeklyPosology;
     @OneToMany(mappedBy = "drug")
     private List<CustomPosology> customPosologies;
 }
