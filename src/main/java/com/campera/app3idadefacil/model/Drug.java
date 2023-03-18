@@ -3,6 +3,7 @@ package com.campera.app3idadefacil.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -26,4 +27,6 @@ public class Drug {
 
     @OneToOne(mappedBy = "drug")
     private UniformPosology uniformPosology;
+    @OneToMany(mappedBy = "drug")
+    private List<CustomPosology> customPosologies;
 }
