@@ -11,15 +11,15 @@ import com.campera.app3idadefacil.service.AppUserService;
 import com.campera.app3idadefacil.service.PatientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/patient")
@@ -40,5 +40,14 @@ public class PatientController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @GetMapping
+    @Operation(summary = "List patients by admin")
+    public ResponseEntity<List<PatientDto>> listAll(Authentication authentication){
+        AppUser appUser = (AppUser) authentication.getPrincipal();
+        List<Patient> patients = service.findAllByAdmin(appUser);
+        List<PatientDto> dtos = PatientMapper.convertToDto(patients);
+        return ResponseEntity.ok(dtos);
     }
 }
