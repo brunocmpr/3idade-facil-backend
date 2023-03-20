@@ -18,17 +18,4 @@ public class Drug {
     private AppUser caretaker;
     @Column(name = "name")
     private String name;
-    @Column(name = "strength")
-    private String strength;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "posologyType")
-    private PosologyType posologyType;
-
-    @OneToOne(mappedBy = "drug")
-    private UniformPosology uniformPosology;
-    @OneToOne(mappedBy = "drug")
-    private WeeklyPosology weeklyPosology;
-    @OneToMany(mappedBy = "drug")
-    private List<CustomPosology> customPosologies;
 }

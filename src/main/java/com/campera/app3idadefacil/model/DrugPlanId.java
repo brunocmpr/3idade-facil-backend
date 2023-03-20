@@ -7,17 +7,15 @@ import javax.persistence.Embeddable;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
 
 @Embeddable @Data
-public class CustomPosologyId implements Serializable {
+public class DrugPlanId implements Serializable {
+    private static final long serialVersionUID = -1316081994949399480L;
     @Column(name = "drug_id")
     private Long drugId;
     @Column(name = "patient_id")
     private Long patientId;
-    @Column(name = "plan_id")
-    private Long planId;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "plan_id")
+    private Long plan_id;
 }
