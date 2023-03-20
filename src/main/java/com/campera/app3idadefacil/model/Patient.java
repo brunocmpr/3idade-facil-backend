@@ -1,10 +1,11 @@
 package com.campera.app3idadefacil.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity @Data
+@Entity @Data @NoArgsConstructor
 @Table(name = "patient")
 public class Patient {
     @Id
