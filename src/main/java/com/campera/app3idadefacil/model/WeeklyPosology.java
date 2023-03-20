@@ -12,10 +12,14 @@ import java.util.List;
 public class WeeklyPosology implements Serializable {
     @Id
     @OneToOne
-    @JoinColumn(name = "drug_id")
-    private Drug drug;
+    @JoinColumns({
+        @JoinColumn(name = "drug_id", referencedColumnName = "drug_id"),
+        @JoinColumn(name = "patient_id", referencedColumnName = "patient_id"),
+        @JoinColumn(name = "plan_id", referencedColumnName = "plan_id")
+    })
+    private DrugPlan drugPlan;
 
-    @OneToMany(mappedBy = "drug")
+    @OneToMany(mappedBy = "drugPlan")
     List<WeeklyPosologyDateTime> weeklyPosologyDateTime;
 
     @Column(name = "start_date_time", columnDefinition= "TIMESTAMP WITH TIME ZONE")

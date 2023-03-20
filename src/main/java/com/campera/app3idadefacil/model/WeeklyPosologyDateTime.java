@@ -14,8 +14,8 @@ public class WeeklyPosologyDateTime {
     private WeeklyPosologyDateTimeId id;
 
     @ManyToOne
-    @MapsId("drug_id")
-    private WeeklyPosology weeklyPosology;
+    @MapsId("drug_plan_id")
+    private DrugPlan drugPlan;
 
     @Enumerated(EnumType.STRING)
     private DayOfWeek dayOfWeek;

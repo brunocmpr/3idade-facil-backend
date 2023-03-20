@@ -8,8 +8,8 @@ import java.time.DayOfWeek;
 
 @Embeddable @Data
 public class WeeklyPosologyDateTimeId implements Serializable {
-    @Column(name = "drug_id")
-    private Long drugId;
+    @Column(name = "drug_plan_id")
+    private Long drugPlanId;
     @Column(name = "day")
     private DayOfWeek dayOfWeek;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
