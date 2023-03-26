@@ -16,11 +16,7 @@ public class WeeklyPosologyDateTime {
     private WeeklyPosologyDateTimeId id;
 
     @ManyToOne
-    @JoinColumns({
-        @JoinColumn(name = "drug_id", referencedColumnName = "drug_id", insertable = false, updatable = false),
-        @JoinColumn(name = "patient_id", referencedColumnName = "patient_id", insertable = false, updatable = false),
-        @JoinColumn(name = "plan_id", referencedColumnName = "plan_id", insertable = false, updatable = false)
-    })
+    @JoinColumn(name = "plan_id", referencedColumnName = "plan_id", insertable = false, updatable = false)
     @Getter @Setter
     private WeeklyPosology weeklyPosology;
 
