@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.DayOfWeek;
 
-@Embeddable
+@Embeddable @Data
 public class WeeklyPosologyDateTimeId implements Serializable {
     @Column(name = "drug_id") @Getter @Setter
     private Long drugId;
@@ -18,6 +18,6 @@ public class WeeklyPosologyDateTimeId implements Serializable {
     private Long planId;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id") @Getter @Setter
+    @Column(name = "id")
     private Long id;
 }
