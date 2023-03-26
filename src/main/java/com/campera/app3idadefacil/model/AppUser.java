@@ -17,20 +17,16 @@ public class AppUser implements UserDetails {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  @Getter @Setter
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id") @Getter @Setter
     private Long id;
-    @Getter @Setter
-    @Column(name = "first_name")
+    @Column(name = "first_name") @Getter @Setter
     private String firstName;
-    @Getter @Setter
-    @Column(name = "last_name")
+    @Column(name = "last_name") @Getter @Setter
     private String lastName;
-    @Getter	@Setter
-    @Column(name = "email")
+    @Column(name = "email") @Getter @Setter
     private String email;
-    @Setter
-    @Column(name = "hashed_password")
+    @Column(name = "hashed_password") @Setter
     private String hashedPassword;
     @ElementCollection(fetch = FetchType.EAGER) @CollectionTable(name = "user_authority_mapping" )
     @Enumerated(EnumType.STRING)  @Getter
