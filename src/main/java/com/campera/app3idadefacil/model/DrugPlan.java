@@ -10,13 +10,17 @@ import java.util.List;
 @Entity
 @Table(name = "drug_plan")
 public class DrugPlan {
-    @EmbeddedId @Getter @Setter
-    private DrugPlanId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id") @Getter @Setter
+    private Long id;
     @ManyToOne
-    @MapsId("drug_id") @Getter
+    @JoinColumn(name = "drug_id", insertable = false, updatable = false)
+    @Getter @Setter
     private Drug drug;
     @ManyToOne
-    @MapsId("patient_id") @Getter
+    @JoinColumn(name = "patient_id", insertable = false, updatable = false)
+    @Getter @Setter
     private Patient patient;
 
     @Column(name = "strength") @Getter @Setter
