@@ -19,4 +19,10 @@ public class Drug {
     private AppUser caretaker;
     @Column(name = "name") @Getter @Setter
     private String name;
+
+    public Drug(){}
+    public Drug(AppUser caretaker, String name) {
+        this.caretaker = caretaker;
+        this.name = name;
+    }
 }

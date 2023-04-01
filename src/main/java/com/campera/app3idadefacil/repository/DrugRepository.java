@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface DrugRepository extends JpaRepository<Drug, Long> {
     List<Drug> findByCaretaker(AppUser appUser);
+    List<Drug> findByNameIgnoreCaseAndCaretaker(String name, AppUser appUser);
 }
