@@ -1,4 +1,4 @@
-package com.campera.app3idadefacil.model.dto;
+package com.campera.app3idadefacil.model.datatransfer.dto;
 
 import com.campera.app3idadefacil.model.Drug;
 import lombok.Data;
