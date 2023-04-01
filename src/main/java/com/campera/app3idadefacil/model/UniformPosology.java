@@ -13,9 +13,12 @@ import java.time.ZonedDateTime;
 @Table(name = "uniform_posology")
 public class UniformPosology implements Serializable {
     @Id
+    @Column(name = "plan_id") @Getter @Setter
+    private Long id;
+
     @OneToOne
-    @JoinColumn(name = "plan_id", referencedColumnName = "id")
-    @Getter @Setter
+    @MapsId
+    @JoinColumn(name = "plan_id") @Getter @Setter
     private DrugPlan drugPlan;
 
     @Column(name = "start_date_time") @Getter @Setter
