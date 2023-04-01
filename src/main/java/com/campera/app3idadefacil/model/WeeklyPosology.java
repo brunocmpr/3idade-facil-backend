@@ -14,9 +14,13 @@ import java.util.List;
 @Table(name = "weekly_posology")
 public class WeeklyPosology implements Serializable {
     @Id
-    @OneToOne
-    @JoinColumn(name = "plan_id", referencedColumnName = "id")
     @Getter @Setter
+    @Column(name = "plan_id")
+    private Long id;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "plan_id") @Getter @Setter
     private DrugPlan drugPlan;
 
     @OneToMany(mappedBy = "weeklyPosology") @Getter
