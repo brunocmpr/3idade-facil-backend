@@ -8,14 +8,14 @@ import java.time.LocalDateTime;
 
 @Data
 public class UniformPosologyDto {
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
     private Integer timeLength;
     private TimeUnit timeUnit;
 
     public UniformPosologyDto(UniformPosology uniformPosology) {
-        this.startDate = uniformPosology.getStartDatetime();
-        this.endDate = uniformPosology.getEndDatetime();
+        this.startDateTime = uniformPosology.getStartDateTime();
+        this.endDateTime = uniformPosology.getEndDateTime();
         this.timeLength = uniformPosology.getTimeLength();
         this.timeUnit = uniformPosology.getTimeUnit();
     }

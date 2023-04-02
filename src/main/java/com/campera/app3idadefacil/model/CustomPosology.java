@@ -1,13 +1,12 @@
 package com.campera.app3idadefacil.model;
 
 import com.campera.app3idadefacil.model.datatransfer.form.CustomPosologyForm;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -21,12 +20,12 @@ public class CustomPosology {
     @Getter @Setter
     private DrugPlan drugPlan;
 
-    @Column(name = "zoned_date_time", columnDefinition= "TIMESTAMP WITH TIME ZONE")
+    @Column(name = "date_time")
     @Getter @Setter
-    ZonedDateTime zonedDateTime;
+    LocalDateTime dateTime;
 
     public CustomPosology(CustomPosologyForm form){
-        this.zonedDateTime = form.getZonedDateTime();
+        this.dateTime = form.getDateTime();
     }
 }
 

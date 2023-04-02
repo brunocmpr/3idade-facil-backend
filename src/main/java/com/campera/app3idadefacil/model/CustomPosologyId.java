@@ -9,7 +9,6 @@ import javax.persistence.Embeddable;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
 
 @Embeddable @Data
 public class CustomPosologyId implements Serializable {
