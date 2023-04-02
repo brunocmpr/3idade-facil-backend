@@ -1,5 +1,6 @@
 package com.campera.app3idadefacil.model;
 
+import com.campera.app3idadefacil.model.datatransfer.form.WeeklyPosologyDateTimeForm;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,4 +28,9 @@ public class WeeklyPosologyDateTime {
     @Column(name = "time")
     @Getter @Setter
     private OffsetTime offsetTime;
+
+    public WeeklyPosologyDateTime(WeeklyPosologyDateTimeForm form){
+        this.dayOfWeek = form.getDayOfWeek();
+        this.offsetTime = form.getOffsetTime();
+    }
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DrugService {
@@ -26,5 +27,13 @@ public class DrugService {
         }
         Drug drug = DrugMapper.fromForm(drugForm, appUser);
         return repository.save(drug);
+    }
+
+    public Optional<Drug> findById(Long drugId) {
+        return repository.findById(drugId);
+    }
+
+    public boolean caretakerManagesDrug(Drug drug, AppUser appUser) {
+        return drug.getCaretaker().equals(appUser);
     }
 }

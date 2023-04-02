@@ -2,12 +2,14 @@ package com.campera.app3idadefacil.model;
 
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
 @Table(name = "drug")
 public class Drug {
     @Id
@@ -20,7 +22,6 @@ public class Drug {
     @Column(name = "name") @Getter @Setter
     private String name;
 
-    public Drug(){}
     public Drug(AppUser caretaker, String name) {
         this.caretaker = caretaker;
         this.name = name;
