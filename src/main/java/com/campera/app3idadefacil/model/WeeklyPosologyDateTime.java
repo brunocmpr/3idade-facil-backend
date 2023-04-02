@@ -1,14 +1,12 @@
 package com.campera.app3idadefacil.model;
 
 import com.campera.app3idadefacil.model.datatransfer.form.WeeklyPosologyDateTimeForm;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.DayOfWeek;
-import java.time.OffsetTime;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "weekly_posology_date_time")
@@ -27,10 +25,10 @@ public class WeeklyPosologyDateTime {
 
     @Column(name = "time")
     @Getter @Setter
-    private OffsetTime offsetTime;
+    private LocalTime time;
 
     public WeeklyPosologyDateTime(WeeklyPosologyDateTimeForm form){
         this.dayOfWeek = form.getDayOfWeek();
-        this.offsetTime = form.getOffsetTime();
+        this.time = form.getTime();
     }
 }

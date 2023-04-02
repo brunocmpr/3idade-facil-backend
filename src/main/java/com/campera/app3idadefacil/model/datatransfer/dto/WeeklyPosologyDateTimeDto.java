@@ -4,15 +4,15 @@ import com.campera.app3idadefacil.model.WeeklyPosologyDateTime;
 import lombok.Data;
 
 import java.time.DayOfWeek;
-import java.time.OffsetTime;
+import java.time.LocalTime;
 
 @Data
 public class WeeklyPosologyDateTimeDto {
     private DayOfWeek dayOfWeek;
-    private OffsetTime offsetTime;
+    private LocalTime time;
 
     public WeeklyPosologyDateTimeDto(WeeklyPosologyDateTime weeklyPosologyDateTime){
         this.dayOfWeek = weeklyPosologyDateTime.getDayOfWeek();
-        this.offsetTime = weeklyPosologyDateTime.getOffsetTime();
+        this.time = weeklyPosologyDateTime.getTime();
     }
 }
