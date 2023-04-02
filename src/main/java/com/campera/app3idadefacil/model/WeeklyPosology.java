@@ -1,14 +1,13 @@
 package com.campera.app3idadefacil.model;
 
 import com.campera.app3idadefacil.model.datatransfer.form.WeeklyPosologyForm;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,21 +26,20 @@ public class WeeklyPosology implements Serializable {
     @JoinColumn(name = "plan_id") @Getter @Setter
     private DrugPlan drugPlan;
 
-    //TODO rename to reflect plural
     @OneToMany(mappedBy = "weeklyPosology") @Getter
-    List<WeeklyPosologyDateTime> weeklyPosologyDateTime = new ArrayList<>();
+    List<WeeklyPosologyDateTime> weeklyPosologyDateTimes = new ArrayList<>();
 
-    @Column(name = "start_date_time", columnDefinition= "TIMESTAMP WITH TIME ZONE")
+    @Column(name = "start_date_time")
     @Getter @Setter
-    ZonedDateTime startDatetime;
-    @Column(name = "end_date_time", columnDefinition= "TIMESTAMP WITH TIME ZONE")
+    LocalDateTime startDateTime;
+    @Column(name = "end_date_time")
     @Getter @Setter
-    ZonedDateTime endDatetime;
+    LocalDateTime endDateTime;
     public  WeeklyPosology(WeeklyPosologyForm form){
-        this.startDatetime = form.getStartDate();
-        this.endDatetime = form.getEndDate();
-        this.weeklyPosologyDateTime = form.getWeeklyPosologyDateTimes().stream().map(WeeklyPosologyDateTime::new)
+        this.startDateTime = form.getStartDateTime();
+        this.endDateTime = form.getEndDateTime();
+        this.weeklyPosologyDateTimes = form.getWeeklyPosologyDateTimes().stream().map(WeeklyPosologyDateTime::new)
                 .collect(Collectors.toList());
-        this.weeklyPosologyDateTime.stream().forEach(date -> date.setWeeklyPosology(this));
+        this.weeklyPosologyDateTimes.stream().forEach(date -> date.setWeeklyPosology(this));
     }
 }
