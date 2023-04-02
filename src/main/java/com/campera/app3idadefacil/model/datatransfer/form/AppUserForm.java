@@ -9,9 +9,9 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class AppUserForm {
-    @NotNull @NotEmpty @Size(min = 2)  @Getter @Setter
+    @NotNull @NotEmpty @Size(min = 2, max = 150)  @Getter @Setter
     private String firstName;
-    @NotNull @NotEmpty @Size(min = 2)  @Getter @Setter
+    @NotNull @NotEmpty @Size(min = 2, max = 150)  @Getter @Setter
     private String lastName;
     @NotNull @NotEmpty @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")  @Getter	@Setter
     private String email;
