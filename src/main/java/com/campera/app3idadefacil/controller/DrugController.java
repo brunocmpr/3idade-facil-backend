@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -33,7 +34,7 @@ public class DrugController {
 
     @PostMapping
     @Operation(summary = "Register new drug")
-    public ResponseEntity<DrugDto> createDrug(@RequestBody DrugForm drugForm, Authentication authentication){
+    public ResponseEntity<DrugDto> createDrug(@Valid @RequestBody DrugForm drugForm, Authentication authentication){
         AppUser appUser = (AppUser) authentication.getPrincipal();
         Drug drug = service.createDrug(drugForm, appUser);
         DrugDto drugDto = new DrugDto(drug);
