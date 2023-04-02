@@ -1,6 +1,7 @@
 package com.campera.app3idadefacil.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "drug_plan")
+@NoArgsConstructor
 public class DrugPlan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class FormValidationHandler {
@@ -23,12 +24,11 @@ public class FormValidationHandler {
     public List<FormValidationErrorDto> handle(MethodArgumentNotValidException exception) {
         List<FieldError> fieldErrorLists = exception.getBindingResult().getFieldErrors();
 
-        List<FormValidationErrorDto> dtoList = new ArrayList<>();
-        fieldErrorLists.forEach(fieldError ->{
+        List<FormValidationErrorDto> dtoList = fieldErrorLists.stream().map(fieldError -> {
             String errorMessage = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
             FormValidationErrorDto errorDto = new FormValidationErrorDto(fieldError.getField(), errorMessage);
-            dtoList.add(errorDto);
-        });
+            return errorDto;
+        }).collect(Collectors.toList());
 
         return dtoList;
     }
