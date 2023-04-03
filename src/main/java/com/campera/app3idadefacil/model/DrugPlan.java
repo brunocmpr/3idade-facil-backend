@@ -14,14 +14,14 @@ import java.util.List;
 public class DrugPlan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id") @Getter @Setter
+    @Column(name = "id", nullable = false, updatable = false, unique = true) @Getter @Setter
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "drug_id", insertable = false, updatable = false)
+    @JoinColumn(name = "drug_id", insertable = false, updatable = false, nullable = false)
     @Getter @Setter
     private Drug drug;
     @ManyToOne
-    @JoinColumn(name = "patient_id", insertable = false, updatable = false)
+    @JoinColumn(name = "patient_id", insertable = false, updatable = false, nullable = false)
     @Getter @Setter
     private Patient patient;
 

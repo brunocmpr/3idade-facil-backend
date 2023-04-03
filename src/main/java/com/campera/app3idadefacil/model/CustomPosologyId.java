@@ -12,10 +12,10 @@ import java.io.Serializable;
 
 @Embeddable @Data
 public class CustomPosologyId implements Serializable {
-    @Column(name = "plan_id") @Getter @Setter
+    @Column(name = "plan_id", nullable = false, updatable = false) @Getter @Setter
     private Long planId;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id") @Getter @Setter
+    @Column(name = "id", nullable = false, updatable = false) @Getter @Setter
     private Long id;
 }

@@ -10,10 +10,10 @@ import java.time.DayOfWeek;
 
 @Embeddable @Data
 public class WeeklyPosologyDateTimeId implements Serializable {
-    @Column(name = "plan_id") @Getter @Setter
+    @Column(name = "plan_id", nullable = false, updatable = false) @Getter @Setter
     private Long planId;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 }

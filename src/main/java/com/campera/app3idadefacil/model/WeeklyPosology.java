@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class WeeklyPosology implements Serializable {
     @Id
     @Getter @Setter
-    @Column(name = "plan_id")
+    @Column(name = "plan_id", nullable = false, updatable = false, unique = true)
     private Long id;
 
     @OneToOne
@@ -29,10 +29,10 @@ public class WeeklyPosology implements Serializable {
     @OneToMany(mappedBy = "weeklyPosology") @Getter
     List<WeeklyPosologyDateTime> weeklyPosologyDateTimes = new ArrayList<>();
 
-    @Column(name = "start_date_time")
+    @Column(name = "start_date_time", nullable = false)
     @Getter @Setter
     LocalDateTime startDateTime;
-    @Column(name = "end_date_time")
+    @Column(name = "end_date_time", nullable = false)
     @Getter @Setter
     LocalDateTime endDateTime;
     public  WeeklyPosology(WeeklyPosologyForm form){

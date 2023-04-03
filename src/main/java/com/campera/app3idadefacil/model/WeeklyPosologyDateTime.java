@@ -15,15 +15,16 @@ public class WeeklyPosologyDateTime {
     private WeeklyPosologyDateTimeId id;
 
     @ManyToOne
-    @JoinColumn(name = "plan_id", referencedColumnName = "plan_id", insertable = false, updatable = false)
+    @JoinColumn(name = "plan_id", referencedColumnName = "plan_id", insertable = false, updatable = false, nullable = false)
     @Getter @Setter
     private WeeklyPosology weeklyPosology;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "day_of_week", nullable = false)
     @Getter @Setter
     private DayOfWeek dayOfWeek;
 
-    @Column(name = "time")
+    @Column(name = "time", nullable = false)
     @Getter @Setter
     private LocalTime time;
 
