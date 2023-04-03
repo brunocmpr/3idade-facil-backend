@@ -10,4 +10,6 @@ import javax.validation.constraints.Size;
 public class DrugForm {
     @Size(min = 2, max= 150)
     private String name;
+
+    private String strength;
 }

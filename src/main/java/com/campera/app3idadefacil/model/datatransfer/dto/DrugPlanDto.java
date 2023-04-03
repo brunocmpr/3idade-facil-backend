@@ -26,7 +26,6 @@ public class DrugPlanDto {
         this.id = plan.getId();
         this.drugId = plan.getDrug().getId();
         this.drugName = plan.getDrug().getName();
-        this.strength = plan.getStrength();
         this.patientId = plan.getPatient().getId();
         this.patientFirstName = plan.getPatient().getFirstName();
         this.patientLastName = plan.getPatient().getLastName();

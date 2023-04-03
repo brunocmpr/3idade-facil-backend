@@ -25,9 +25,6 @@ public class DrugPlan {
     @Getter @Setter
     private Patient patient;
 
-    @Column(name = "strength") @Getter @Setter
-    private String strength;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "posologyType") @Getter @Setter
     private PosologyType posologyType;

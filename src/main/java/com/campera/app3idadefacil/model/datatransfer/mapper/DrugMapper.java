@@ -10,7 +10,7 @@ import java.util.List;
 public class DrugMapper {
 
     public static Drug fromForm(DrugForm drugForm, AppUser appUser) {
-        return new Drug(appUser, drugForm.getName());
+        return new Drug(appUser, drugForm.getName(), drugForm.getStrength());
     }
 
     public static List<DrugDto> toDtoList(List<Drug> drugs) {

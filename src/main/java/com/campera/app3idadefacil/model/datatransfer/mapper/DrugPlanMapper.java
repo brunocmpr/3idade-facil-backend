@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 public class DrugPlanMapper {
     public static DrugPlan fromForm(DrugPlanForm planForm, Patient patient, Drug drug) {
         DrugPlan drugPlan = new DrugPlan();
-        drugPlan.setStrength(planForm.getStrength());
         drugPlan.setPosologyType(planForm.getPosologyType());
         drugPlan.setDrug(drug);
         drugPlan.setPatient(patient);
