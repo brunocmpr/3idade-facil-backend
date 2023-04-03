@@ -20,7 +20,7 @@ public class CustomPosology {
     @Getter @Setter
     private DrugPlan drugPlan;
 
-    @Column(name = "date_time")
+    @Column(name = "date_time", nullable = false)
     @Getter @Setter
     LocalDateTime dateTime;
 
