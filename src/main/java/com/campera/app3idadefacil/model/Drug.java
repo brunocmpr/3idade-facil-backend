@@ -22,8 +22,12 @@ public class Drug {
     @Column(name = "name", nullable = false) @Getter @Setter
     private String name;
 
-    public Drug(AppUser caretaker, String name) {
+    @Column(name = "strength") @Getter @Setter
+    private String strength;
+
+    public Drug(AppUser caretaker, String name, String strength) {
         this.caretaker = caretaker;
         this.name = name;
+        this.strength = strength;
     }
 }

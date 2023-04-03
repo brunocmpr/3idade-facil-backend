@@ -11,7 +11,6 @@ import java.util.List;
 public class DrugPlanForm {
     private Long drugId;
     private Long patientId;
-    private String strength;
     private PosologyType posologyType;
     private UniformPosologyForm uniformPosology;
     private WeeklyPosologyForm weeklyPosology;

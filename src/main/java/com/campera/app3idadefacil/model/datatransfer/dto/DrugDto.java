@@ -7,9 +7,11 @@ import lombok.Data;
 public class DrugDto {
     private Long id;
     private String name;
+    private String strength;
 
     public DrugDto(Drug drug){
         this.id = drug.getId();
         this.name = drug.getName();
+        this.strength = drug.getStrength();
     }
 }
