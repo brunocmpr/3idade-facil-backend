@@ -17,21 +17,21 @@ public class DrugPlan {
     @Column(name = "id", nullable = false, updatable = false, unique = true) @Getter @Setter
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "drug_id", insertable = false, updatable = false, nullable = false)
+    @JoinColumn(name = "drug_id", nullable = false)
     @Getter @Setter
     private Drug drug;
     @ManyToOne
-    @JoinColumn(name = "patient_id", insertable = false, updatable = false, nullable = false)
+    @JoinColumn(name = "patient_id", nullable = false)
     @Getter @Setter
     private Patient patient;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "posologyType") @Getter @Setter
     private PosologyType posologyType;
-    @OneToOne(mappedBy = "drugPlan") @Getter @Setter
+    @OneToOne(mappedBy = "drugPlan", cascade = CascadeType.ALL) @Getter @Setter
     private UniformPosology uniformPosology;
-    @OneToOne(mappedBy = "drugPlan") @Getter @Setter
+    @OneToOne(mappedBy = "drugPlan", cascade = CascadeType.ALL) @Getter @Setter
     private WeeklyPosology weeklyPosology;
-    @OneToMany(mappedBy = "drugPlan") @Getter @Setter
+    @OneToMany(mappedBy = "drugPlan", cascade = CascadeType.ALL) @Getter @Setter
     private List<CustomPosology> customPosologies;
 }

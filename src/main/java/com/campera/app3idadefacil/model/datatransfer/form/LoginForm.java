@@ -6,11 +6,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class LoginForm {
-    @NotNull @NotEmpty  @Getter @Setter
+    @NotNull @NotEmpty @Size(min = 2, max= 150)  @Getter @Setter
     private String email;
-    @NotNull @NotEmpty  @Getter @Setter
+    @NotNull @NotEmpty @Size(min = 2, max= 150)  @Getter @Setter
     private String password;
 
     public UsernamePasswordAuthenticationToken convertToUserPwToken() {
