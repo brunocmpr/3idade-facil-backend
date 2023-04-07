@@ -10,10 +10,19 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
+@IdClass(CustomPosologyId.class)
 @Table(name = "custom_posology")
 public class CustomPosology {
-    @EmbeddedId @Getter @Setter
-    private CustomPosologyId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    @Getter @Setter
+    private Long id;
+
+    @Id
+    @Column(name = "plan_id")
+    @Getter @Setter
+    private Long planId;
 
     @ManyToOne
     @JoinColumn(name = "plan_id", referencedColumnName = "id", insertable = false, updatable = false)
@@ -28,5 +37,3 @@ public class CustomPosology {
         this.dateTime = form.getDateTime();
     }
 }
-
-

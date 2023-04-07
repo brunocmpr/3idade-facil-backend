@@ -1,21 +1,19 @@
 package com.campera.app3idadefacil.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import java.io.Serializable;
 
-@Embeddable @Data
+//@Data
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CustomPosologyId implements Serializable {
-    @Column(name = "plan_id", nullable = false, updatable = false) @Getter @Setter
-    private Long planId;
-
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, updatable = false) @Getter @Setter
     private Long id;
+    private Long planId;
 }
