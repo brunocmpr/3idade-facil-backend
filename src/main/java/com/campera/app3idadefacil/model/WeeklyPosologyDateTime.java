@@ -2,6 +2,7 @@ package com.campera.app3idadefacil.model;
 
 import com.campera.app3idadefacil.model.datatransfer.form.WeeklyPosologyDateTimeForm;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,10 +10,19 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 @Entity
+@IdClass(WeeklyPosologyDateTimeId.class)
+@NoArgsConstructor
 @Table(name = "weekly_posology_date_time")
 public class WeeklyPosologyDateTime {
-    @EmbeddedId @Getter @Setter
-    private WeeklyPosologyDateTimeId id;
+
+    @Id
+    @Column(name = "plan_id", nullable = false, updatable = false) @Getter @Setter
+    private Long planId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false) @Getter @Setter
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "plan_id", referencedColumnName = "plan_id", insertable = false, updatable = false, nullable = false)
