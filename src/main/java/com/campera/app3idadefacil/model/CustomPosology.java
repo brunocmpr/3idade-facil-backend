@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
-@IdClass(CustomPosologyId.class)
 @Table(name = "custom_posology")
 public class CustomPosology {
     @Id
@@ -19,13 +18,8 @@ public class CustomPosology {
     @Getter @Setter
     private Long id;
 
-    @Id
-    @Column(name = "plan_id")
-    @Getter @Setter
-    private Long planId;
-
     @ManyToOne
-    @JoinColumn(name = "plan_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "plan_id", nullable = false)
     @Getter @Setter
     private DrugPlan drugPlan;
 
