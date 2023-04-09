@@ -26,10 +26,7 @@ public class DrugPlanMapper {
             case CUSTOM -> {
                 drugPlan.setCustomPosologies(planForm.getCustomPosologies().stream().map(CustomPosology::new)
                         .collect(Collectors.toList()));
-                drugPlan.getCustomPosologies().stream().forEach(posology -> {
-                    posology.setPlanId(drugPlan.getId());
-                    posology.setDrugPlan(drugPlan);
-                });
+                drugPlan.getCustomPosologies().stream().forEach(posology -> posology.setDrugPlan(drugPlan));
                 break;
             }
         }
