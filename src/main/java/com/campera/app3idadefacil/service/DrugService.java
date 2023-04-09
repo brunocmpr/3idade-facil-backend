@@ -14,8 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class DrugService {
@@ -32,11 +30,13 @@ public class DrugService {
     @Transactional
     public Drug createDrug(DrugForm drugForm, AppUser appUser, List<MultipartFile> multipartFiles) {
         guardClausesCreateDrug(drugForm, multipartFiles, appUser);
+        
         Drug drug = DrugMapper.fromForm(drugForm, appUser);
-        List<UUID> uuids = imageService.saveFilesCreateUuids(multipartFiles);
-        List<Image> images = uuids.stream().map(UUID::toString).map(Image::new).collect(Collectors.toList());
+        List<Image> images = imageService.persistFilesAndGenerateNonPersistedImages(multipartFiles);
+
         drug.setImages(images);
         Drug savedDrug = repository.save(drug);
+
         images.forEach(image -> image.setDrug(savedDrug));
         List<Image> savedImages = imageService.saveAll(images);
 

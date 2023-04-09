@@ -12,25 +12,24 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ImageService {
 
-    private final Path storePath;
-
+    private final Path storagePath;
+    private final String imageStorageDir = "images/";
+    private FilePersistenceService persistenceService;
     @Autowired
     private ImageRepository repository;
-
-    public ImageService(@Value("${image_store_path}") String storePath) throws IOException {
-        this.storePath = Paths.get(storePath);
-        System.out.println(this.storePath);
-        Files.createDirectories(this.storePath);
+    public ImageService(FilePersistenceService persistenceService) throws IOException {
+        this.persistenceService = persistenceService;
+        this.storagePath = Paths.get(persistenceService.baseStorageDir + imageStorageDir);
+        persistenceService.createDirectiories(this.storagePath);
     }
 
     public List<Image> findByDrug(Drug drug){
@@ -41,37 +40,12 @@ public class ImageService {
         return repository.saveAll(images);
     }
 
-    public List<UUID> saveFilesCreateUuids(List<MultipartFile> files){
-        List<UUID> uuids = new ArrayList<>();
-        for(int i = 0; i < files.size(); i++) {
-            UUID uuid = UUID.randomUUID();
-            MultipartFile file = files.get(i);
-            try {
-                persistFile(file, uuid);
-                uuids.add(uuid);
-            } catch (IOException e) {
-                deleteFiles(uuids);
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-            }
-        }
-        return uuids;
+    public List<Image> persistFilesAndGenerateNonPersistedImages(List<MultipartFile> multipartFiles) {
+        List<UUID> uuids = persistenceService.saveFilesCreateUuids(multipartFiles, this.storagePath);
+        List<Image> images = uuids.stream().map(UUID::toString).map(Image::new).collect(Collectors.toList());
+        return images;
     }
 
-    private void persistFile(MultipartFile file, UUID uuid) throws IOException {
-        Path filePath = storePath.resolve(uuid.toString());
-        Files.write(filePath, file.getBytes());
-    }
-
-    private void deleteFiles(List<UUID> uuids) {
-        uuids.stream().forEach(image -> {
-            Path imagePath = storePath.resolve(uuids.toString());
-            try {
-                Files.delete(imagePath);
-            } catch (IOException e) {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-            }
-        });
-    }
 
     public void guardClausesCreateImages(List<MultipartFile> files) {
         if(isNotListOfImages(files)){
