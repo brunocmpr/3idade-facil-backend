@@ -25,6 +25,9 @@ public class Drug {
     @Column(name = "strength") @Getter @Setter
     private String strength;
 
+    @OneToMany(mappedBy = "drug") @Getter @Setter
+    private List<Image> images;
+
     public Drug(AppUser caretaker, String name, String strength) {
         this.caretaker = caretaker;
         this.name = name;
