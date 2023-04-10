@@ -38,7 +38,9 @@ public class FilePersistenceService {
     }
 
     private void persistFile(MultipartFile file, UUID uuid, Path storagePath) throws IOException {
-        Path filePath = storagePath.resolve(uuid.toString());
+        String originalFilename = file.getOriginalFilename();
+        String extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+        Path filePath = storagePath.resolve(uuid.toString() + "." + extension);
         Files.write(filePath, file.getBytes());
     }
 
