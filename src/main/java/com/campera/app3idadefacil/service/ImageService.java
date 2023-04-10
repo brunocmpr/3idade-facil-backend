@@ -17,6 +17,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class ImageService {
@@ -42,7 +43,10 @@ public class ImageService {
 
     public List<Image> persistFilesAndGenerateNonPersistedImages(List<MultipartFile> multipartFiles) {
         List<UUID> uuids = persistenceService.saveFilesCreateUuids(multipartFiles, this.storagePath);
-        List<Image> images = uuids.stream().map(UUID::toString).map(Image::new).collect(Collectors.toList());
+        List<Image> images = IntStream.range(0, uuids.size()).mapToObj(i -> new Image(uuids.get(i).toString()
+                , multipartFiles.get(i).getOriginalFilename().substring(
+                        multipartFiles.get(i).getOriginalFilename().lastIndexOf(".") + 1))
+                ).collect(Collectors.toList());
         return images;
     }
 

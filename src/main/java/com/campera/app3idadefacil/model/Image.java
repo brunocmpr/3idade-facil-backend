@@ -20,12 +20,17 @@ public class Image {
     @Getter @Setter
     private String filename;
 
+    @Column(name = "extension")
+    @Getter @Setter
+    private String extension;
+
     @ManyToOne
     @JoinColumn(name = "drug_id", nullable = false)
     @Getter @Setter
     private Drug drug;
 
-    public Image(String filename) {
+    public Image(String filename, String extension) {
         this.filename = filename;
+        this.extension = extension;
     }
 }
