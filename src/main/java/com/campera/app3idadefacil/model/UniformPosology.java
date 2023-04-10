@@ -1,6 +1,7 @@
 package com.campera.app3idadefacil.model;
 
 import com.campera.app3idadefacil.model.datatransfer.form.UniformPosologyForm;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,8 +34,8 @@ public class UniformPosology implements Serializable {
     TimeUnit timeUnit;
 
     public UniformPosology(UniformPosologyForm form){
-        this.startDateTime = form.getStartDateTime();
-        this.endDateTime = form.getEndDateTime();
+        this.startDateTime = form.getStartDateTime().withSecond(0).withNano(0);
+        this.endDateTime = form.getEndDateTime().withSecond(0).withNano(0);
         this.timeLength = form.getTimeLength();
         this.timeUnit = form.getTimeUnit();
     }

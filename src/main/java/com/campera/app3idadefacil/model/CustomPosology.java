@@ -1,6 +1,7 @@
 package com.campera.app3idadefacil.model;
 
 import com.campera.app3idadefacil.model.datatransfer.form.CustomPosologyForm;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +29,6 @@ public class CustomPosology {
     LocalDateTime dateTime;
 
     public CustomPosology(CustomPosologyForm form){
-        this.dateTime = form.getDateTime();
+        this.dateTime = form.getDateTime().withSecond(0).withNano(0);
     }
 }

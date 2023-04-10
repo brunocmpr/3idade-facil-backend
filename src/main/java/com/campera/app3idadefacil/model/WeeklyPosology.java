@@ -36,8 +36,8 @@ public class WeeklyPosology implements Serializable {
     @Getter @Setter
     LocalDateTime endDateTime;
     public  WeeklyPosology(WeeklyPosologyForm form){
-        this.startDateTime = form.getStartDateTime();
-        this.endDateTime = form.getEndDateTime();
+        this.startDateTime = form.getStartDateTime().withSecond(0).withNano(0);
+        this.endDateTime = form.getEndDateTime().withSecond(0).withNano(0);
         this.weeklyPosologyDateTimes = form.getWeeklyPosologyDateTimes().stream().map(WeeklyPosologyDateTime::new)
                 .collect(Collectors.toList());
         this.weeklyPosologyDateTimes.stream().forEach(date -> date.setWeeklyPosology(this));
