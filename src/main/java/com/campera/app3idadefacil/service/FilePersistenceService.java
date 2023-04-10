@@ -15,7 +15,7 @@ import java.util.UUID;
 @Service
 public class FilePersistenceService {
 
-    public void createDirectiories(Path storagePath) throws IOException {
+    public void createDirectories(Path storagePath) throws IOException {
         Files.createDirectories(storagePath);
     }
 
