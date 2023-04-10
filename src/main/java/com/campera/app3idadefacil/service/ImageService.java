@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -55,8 +56,11 @@ public class ImageService {
     private boolean isNotListOfImages(List<MultipartFile> files) {
         for (MultipartFile file : files) {
             try {
-                ImageIO.read(file.getInputStream());
-            } catch (Exception e) {
+                BufferedImage image = ImageIO.read(file.getInputStream());
+                if (image == null) {
+                    return true;
+                }
+            } catch (IOException e) {
                 return true;
             }
         }
