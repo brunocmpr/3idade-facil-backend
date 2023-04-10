@@ -35,6 +35,6 @@ public class WeeklyPosologyDateTime {
 
     public WeeklyPosologyDateTime(WeeklyPosologyDateTimeForm form){
         this.dayOfWeek = form.getDayOfWeek();
-        this.time = form.getTime();
+        this.time = form.getTime().withSecond(0).withNano(0);
     }
 }
