@@ -33,4 +33,8 @@ public class Image {
         this.filename = filename;
         this.extension = extension;
     }
+
+    public String getFilenameAndExtension() {
+        return filename + "." + extension;
+    }
 }
