@@ -1,0 +1,22 @@
+package com.campera.app3idadefacil.model.datatransfer.dto;
+
+import com.campera.app3idadefacil.model.WeeklyPosology;
+import lombok.Data;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Data
+public class WeeklyPosologyDto {
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
+    private List<WeeklyPosologyDateTimeDto> dateTimeList;
+
+    public WeeklyPosologyDto(WeeklyPosology weeklyPosology) {
+        this.startDateTime = weeklyPosology.getStartDateTime();
+        this.endDateTime = weeklyPosology.getEndDateTime();
+        this.dateTimeList = weeklyPosology.getWeeklyPosologyDateTimes().stream().map(WeeklyPosologyDateTimeDto::new)
+                .collect(Collectors.toList());
+    }
+}

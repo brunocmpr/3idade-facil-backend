@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PatientService {
@@ -25,5 +26,13 @@ public class PatientService {
     public List<Patient> findAllByAdmin(AppUser appUser) {
         List<Patient> patients = repository.findAllByAdmin(appUser);
         return patients;
+    }
+
+    public Optional<Patient> findById(Long patientId) {
+        return repository.findById(patientId);
+    }
+
+    public boolean caretakerManagesPatient(Patient patient, AppUser appUser) {
+        return patient.getAdmin().equals(appUser);
     }
 }
