@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/drug")
@@ -40,8 +41,8 @@ public class DrugController {
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE } )
     @Operation(summary = "Register new drug")
     public ResponseEntity<DrugDto> createDrug(
-            @RequestPart("drugForm") DrugForm drugForm
-            , @RequestPart(value = "images", required = false) @Size(max = 4) List<MultipartFile> images
+            @RequestPart(value = "drugForm", required = true) DrugForm drugForm
+            , @RequestPart(value = "images", required = false) @Size(max = 4) Optional<List<MultipartFile>> images
             , Authentication authentication ){
         AppUser appUser = (AppUser) authentication.getPrincipal();
         Drug drug = service.createDrug(drugForm, appUser, images);
