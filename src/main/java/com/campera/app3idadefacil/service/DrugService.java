@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,13 +29,16 @@ public class DrugService {
     }
 
     @Transactional
-    public Drug createDrug(DrugForm drugForm, AppUser appUser, List<MultipartFile> multipartFiles) {
+    public Drug createDrug(DrugForm drugForm, AppUser appUser, Optional<List<MultipartFile>> multipartFiles) {
         guardClausesCreateDrug(drugForm, multipartFiles, appUser);
         
         Drug drug = DrugMapper.fromForm(drugForm, appUser);
-        List<Image> images = imageService.persistFilesAndGenerateNonPersistedImages(multipartFiles);
-
+        List<Image> images = new ArrayList<>();
+        if(multipartFiles.isPresent() && !multipartFiles.get().isEmpty()){
+            images = imageService.persistFilesAndGenerateNonPersistedImages(multipartFiles.get());
+        }
         drug.setImages(images);
+
         Drug savedDrug = repository.save(drug);
 
         images.forEach(image -> image.setDrug(savedDrug));
@@ -44,13 +48,14 @@ public class DrugService {
         return savedDrug;
     }
 
-    private void guardClausesCreateDrug(DrugForm drugForm, List<MultipartFile> files, AppUser appUser) {
+    private void guardClausesCreateDrug(DrugForm drugForm, Optional<List<MultipartFile>> files, AppUser appUser) {
         if(!repository.findByNameIgnoreCaseAndStrengthIgnoreCaseAndCaretaker(drugForm.getName(), drugForm.getStrength()
                 , appUser).isEmpty()){
             throw new ExistingEntityException("Esta medicação já foi registrada");
         }
-
-        imageService.guardClausesCreateImages(files);
+        if(files.isPresent() && !files.get().isEmpty()){
+            imageService.guardClausesCreateImages(files.get());
+        }
     }
 
     public Optional<Drug> findById(Long drugId) {
