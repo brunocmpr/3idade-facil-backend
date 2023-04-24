@@ -1,6 +1,7 @@
 package com.campera.app3idadefacil.model;
 
 public enum TimeUnit {
+    MINUTE("MINUTE"),
     HOUR("HOUR"),
     DAY("DAY"),
     WEEK("WEEK");
