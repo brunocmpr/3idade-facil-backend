@@ -9,11 +9,13 @@ import java.util.stream.Collectors;
 
 @Data
 public class WeeklyPosologyDto {
+    private Long id;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private List<WeeklyPosologyDateTimeDto> dateTimeList;
 
     public WeeklyPosologyDto(WeeklyPosology weeklyPosology) {
+        this.id = weeklyPosology.getId();
         this.startDateTime = weeklyPosology.getStartDateTime();
         this.endDateTime = weeklyPosology.getEndDateTime();
         this.dateTimeList = weeklyPosology.getWeeklyPosologyDateTimes().stream().map(WeeklyPosologyDateTimeDto::new)

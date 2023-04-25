@@ -10,13 +10,8 @@ import java.util.stream.Collectors;
 @Data
 public class DrugPlanDto {
     private Long id;
-    private Long drugId;
-    private String drugName;
-    private String strength;
-    private Long patientId;
-    private String patientFirstName;
-    private String patientLastName;
-    private String patientNickname;
+    private DrugDto drug;
+    private PatientDto patient;
     private PosologyType posologyType;
     private UniformPosologyDto uniformPosology;
     private WeeklyPosologyDto weeklyPosology;
@@ -24,13 +19,8 @@ public class DrugPlanDto {
 
     public DrugPlanDto(DrugPlan plan) {
         this.id = plan.getId();
-        this.drugId = plan.getDrug().getId();
-        this.drugName = plan.getDrug().getName();
-        this.strength = plan.getDrug().getStrength();
-        this.patientId = plan.getPatient().getId();
-        this.patientFirstName = plan.getPatient().getFirstName();
-        this.patientLastName = plan.getPatient().getLastName();
-        this.patientNickname = plan.getPatient().getNickname();
+        this.drug = new DrugDto(plan.getDrug());
+        this.patient = new PatientDto(plan.getPatient());
         this.posologyType = plan.getPosologyType();
         this.uniformPosology = plan.getPosologyType().equals(PosologyType.UNIFORM)
                 ? new UniformPosologyDto(plan.getUniformPosology())

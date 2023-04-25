@@ -25,7 +25,7 @@ public class UniformPosology implements Serializable {
 
     @Column(name = "start_date_time", nullable = false) @Getter @Setter
     LocalDateTime startDateTime;
-    @Column(name = "end_date_time", nullable = false) @Getter @Setter
+    @Column(name = "end_date_time", nullable = true) @Getter @Setter
     LocalDateTime endDateTime;
     @Column(name = "time_length", nullable = false) @Getter @Setter
     Integer timeLength;
@@ -35,7 +35,8 @@ public class UniformPosology implements Serializable {
 
     public UniformPosology(UniformPosologyForm form){
         this.startDateTime = form.getStartDateTime().withSecond(0).withNano(0);
-        this.endDateTime = form.getEndDateTime().withSecond(0).withNano(0);
+        this.endDateTime = form.getEndDateTime() != null ? form.getEndDateTime().withSecond(0).withNano(0)
+                : null;
         this.timeLength = form.getTimeLength();
         this.timeUnit = form.getTimeUnit();
     }
