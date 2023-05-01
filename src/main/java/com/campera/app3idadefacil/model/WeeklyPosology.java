@@ -25,7 +25,7 @@ public class WeeklyPosology implements Serializable {
     @JoinColumn(name = "plan_id") @Getter @Setter
     private DrugPlan drugPlan;
 
-    @OneToMany(mappedBy = "weeklyPosology") @Getter
+    @OneToMany(mappedBy = "weeklyPosology", cascade = CascadeType.ALL) @Getter
     List<WeeklyPosologyDateTime> weeklyPosologyDateTimes = new ArrayList<>();
 
     @Column(name = "start_date_time", nullable = false)
