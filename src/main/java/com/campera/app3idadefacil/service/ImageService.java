@@ -30,21 +30,30 @@ import java.util.stream.IntStream;
 public class ImageService {
 
     private final Path storagePath;
-    private final String imageStorageDir = "images/";
+    private final String rootImageStorageDir = "images/";
+    public final String drugStorageDir = "drugs/";
+    public final String patientStorageDir = "patients/";
+    private final List<String> childDirs = List.of(drugStorageDir, patientStorageDir);
     private FilePersistenceService persistenceService;
     @Autowired
     private ImageRepository repository;
 
     public ImageService(FilePersistenceService persistenceService) throws IOException {
         this.persistenceService = persistenceService;
-        this.storagePath = Paths.get(persistenceService.baseStorageDir + imageStorageDir);
-        persistenceService.createDirectories(this.storagePath);
+        this.storagePath = Paths.get(persistenceService.baseStorageDir + rootImageStorageDir);
+        childDirs.forEach((dir)->{
+            try {
+                persistenceService.createDirectories(this.storagePath.resolve(dir));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public Resource getResource(Image image, AppUser user) {
         guardClausesGetResource(image, user);
 
-        Path imagePath = storagePath.resolve(image.getFilenameAndExtension());
+        Path imagePath = storagePath.resolve(image.getDirectoryAndFilenameAndExtension());
         Resource imageResource = null;
         try {
             imageResource = new UrlResource(imagePath.toUri());
@@ -58,13 +67,14 @@ public class ImageService {
     }
 
     private void guardClausesGetResource(Image image, AppUser user) {
-        if(!image.getDrug().getCaretaker().equals(user)){
+        if((image.getDrug() != null && !image.getDrug().getCaretaker().equals(user)
+        ||(image.getPatient() != null && !image.getPatient().getAdmin().equals(user)))){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Usuário não possui direito sobre este recurso.");
         }
     }
 
     public MediaType getMediaType(Image image){
-        Path imagePath = storagePath.resolve(image.getFilenameAndExtension());
+        Path imagePath = storagePath.resolve(image.getDirectoryAndFilenameAndExtension());
         String contentType = null;
         try {
             contentType = Files.probeContentType(imagePath);
@@ -86,10 +96,13 @@ public class ImageService {
         return repository.saveAll(images);
     }
 
-    public List<Image> persistFilesAndGenerateNonPersistedImages(List<MultipartFile> multipartFiles) {
-        List<UUID> uuids = persistenceService.saveFilesCreateUuids(multipartFiles, this.storagePath);
+    public List<Image> persistFilesAndGenerateNonPersistedImages(List<MultipartFile> multipartFiles
+            , String childStorageDir) {
+        Path finalStoragePath = this.storagePath.resolve(childStorageDir);
+        List<UUID> uuids = persistenceService.saveFilesCreateUuids(multipartFiles, finalStoragePath);
         List<Image> images = IntStream.range(0, uuids.size()).mapToObj(i -> new Image(uuids.get(i).toString()
-                , extractExtension(multipartFiles.get(i).getOriginalFilename()))
+                , extractExtension(multipartFiles.get(i).getOriginalFilename())
+                , persistenceService.baseStorageDir + rootImageStorageDir + childStorageDir)
                 ).collect(Collectors.toList());
         return images;
     }
