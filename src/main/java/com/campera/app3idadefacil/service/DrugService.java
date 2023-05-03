@@ -35,7 +35,8 @@ public class DrugService {
         Drug drug = DrugMapper.fromForm(drugForm, appUser);
         List<Image> images = new ArrayList<>();
         if(multipartFiles.isPresent() && !multipartFiles.get().isEmpty()){
-            images = imageService.persistFilesAndGenerateNonPersistedImages(multipartFiles.get());
+            images = imageService.persistFilesAndGenerateNonPersistedImages(multipartFiles.get()
+                    , imageService.drugStorageDir);
         }
         drug.setImages(images);
 

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity @NoArgsConstructor
 @Table(name = "patient")
@@ -25,6 +26,9 @@ public class Patient {
     private String lastName;
     @Column(name = "nickname") @Getter @Setter
     private String nickname;
+
+    @OneToMany(mappedBy = "drug") @Getter @Setter
+    private List<Image> images;
 
     public Patient(AppUser admin, String firstName, String lastName, String nickname) {
         this.admin = admin;

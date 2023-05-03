@@ -1,6 +1,7 @@
 package com.campera.app3idadefacil.model.datatransfer.mapper;
 
 import com.campera.app3idadefacil.model.AppUser;
+import com.campera.app3idadefacil.model.Image;
 import com.campera.app3idadefacil.model.Patient;
 import com.campera.app3idadefacil.model.datatransfer.dto.AppUserDto;
 import com.campera.app3idadefacil.model.datatransfer.dto.PatientDto;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 public class PatientMapper {
     public static PatientDto convertToDto(Patient patient){
         return new PatientDto(patient.getId(), patient.getAdmin().getId(), patient.getFirstName(), patient.getLastName()
-                , patient.getNickname());
+                , patient.getNickname(), patient.getImages().stream().map(Image::getId).collect(Collectors.toList()));
     }
 
     public static List<PatientDto> convertToDto(List<Patient> patients){

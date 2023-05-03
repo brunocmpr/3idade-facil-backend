@@ -11,6 +11,6 @@ public class PatientForm {
     private String firstName;
     @NotNull @Size(min = 2, max = 150) @Getter @Setter
     private String lastName;
-    @NotNull @Size(min = 2, max = 150) @Getter @Setter
+    @Size(min = 2, max = 150) @Getter @Setter
     private String nickname;
 }
