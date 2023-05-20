@@ -14,4 +14,6 @@ public class DrugForm {
 
     @Size(min = 2, max= 150)
     private String strength;
+
+    private String instructions;
 }
