@@ -12,6 +12,7 @@ public class DrugDto {
     private Long id;
     private String name;
     private String strength;
+    private String instructions;
 
     private List<Long> imageIds;
 
@@ -20,5 +21,6 @@ public class DrugDto {
         this.name = drug.getName();
         this.strength = drug.getStrength();
         this.imageIds = drug.getImages().stream().map(Image::getId).collect(Collectors.toList());
+        this.instructions = drug.getInstructions();
     }
 }

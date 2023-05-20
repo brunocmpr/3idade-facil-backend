@@ -25,12 +25,16 @@ public class Drug {
     @Column(name = "strength") @Getter @Setter
     private String strength;
 
+    @Column(name = "instructions", columnDefinition = "TEXT") @Getter @Setter
+    private String instructions;
+
     @OneToMany(mappedBy = "drug") @Getter @Setter
     private List<Image> images;
 
-    public Drug(AppUser caretaker, String name, String strength) {
+    public Drug(AppUser caretaker, String name, String strength, String instructions) {
         this.caretaker = caretaker;
         this.name = name;
         this.strength = strength;
+        this.instructions = instructions;
     }
 }

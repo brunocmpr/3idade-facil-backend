@@ -43,7 +43,9 @@ public class OpenApi30Config {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(dateTimeMapper);
         converter.setSupportedMediaTypes(List.of(
                 new MediaType("application", "json"),
-                new MediaType("application", "octet-stream")));
+                new MediaType("application", "octet-stream"),
+                MediaType.valueOf("text/plain;charset=UTF-8")
+        ));
         return converter;
     }
 }
