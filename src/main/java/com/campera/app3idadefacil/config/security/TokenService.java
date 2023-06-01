@@ -41,7 +41,8 @@ public class TokenService {
                 .setIssuer("Campera")
                 .setSubject(user.getId().toString())
                 .setIssuedAt(today)
-                .setExpiration(expirationDate)
+//                .setExpiration(expirationDate)
+                .setExpiration(null)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
