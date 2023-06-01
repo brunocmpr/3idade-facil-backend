@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,5 +51,8 @@ public class DrugPlanService {
         } else if (planForm.getPosologyType().equals(PosologyType.UNIFORM) && planForm.getUniformPosology() == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Posologia uniforme não propriamente fornecida.");
         }
+    }
+    public List<DrugPlan> findAllByAdmin(AppUser appUser) {
+        return repository.findAllByPatient_Admin(appUser);
     }
 }

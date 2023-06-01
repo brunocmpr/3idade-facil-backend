@@ -13,12 +13,10 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/plan")
@@ -35,5 +33,15 @@ public class DrugPlanController {
         DrugPlan plan = service.createDrugPlan(planForm, appUser);
         DrugPlanDto dto = new DrugPlanDto(plan);
         return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping
+    @Operation(summary = "List drug plans by admin")
+    public ResponseEntity<List<DrugPlanDto>> listAll(Authentication authentication){
+        AppUser appUser = (AppUser) authentication.getPrincipal();
+        List<DrugPlan> plans = service.findAllByAdmin(appUser);
+        List<DrugPlanDto> dtos = plans.stream().map(DrugPlanDto::new).toList();
+        return ResponseEntity.ok(dtos);
+
     }
 }

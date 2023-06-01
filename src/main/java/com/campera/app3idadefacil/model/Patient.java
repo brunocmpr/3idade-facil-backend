@@ -27,7 +27,7 @@ public class Patient {
     @Column(name = "nickname") @Getter @Setter
     private String nickname;
 
-    @OneToMany(mappedBy = "drug") @Getter @Setter
+    @OneToMany(mappedBy = "patient") @Getter @Setter
     private List<Image> images;
 
     public Patient(AppUser admin, String firstName, String lastName, String nickname) {
