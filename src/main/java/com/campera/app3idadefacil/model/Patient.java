@@ -30,6 +30,10 @@ public class Patient {
     @OneToMany(mappedBy = "patient") @Getter @Setter
     private List<Image> images;
 
+    @OneToMany(mappedBy = "patient") @Getter @Setter
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<DrugPlan> drugPlans;
+
     public Patient(AppUser admin, String firstName, String lastName, String nickname) {
         this.admin = admin;
         this.firstName = firstName;

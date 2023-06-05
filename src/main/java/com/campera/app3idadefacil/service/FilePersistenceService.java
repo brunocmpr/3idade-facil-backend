@@ -30,7 +30,10 @@ public class FilePersistenceService {
                 persistFile(file, uuid, storagePath);
                 uuids.add(uuid);
             } catch (IOException e) {
-                deleteFiles(uuids, storagePath);
+                String originalFilename = file.getOriginalFilename();
+                String extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+                String fullFilepath = uuid.toString() + "." + extension;
+                deleteFiles(fullFilepath, storagePath);
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
             }
         }
@@ -44,14 +47,26 @@ public class FilePersistenceService {
         Files.write(filePath, file.getBytes());
     }
 
-    private void deleteFiles(List<UUID> uuids, Path storagePath) {
-        uuids.stream().forEach(image -> {
-            Path imagePath = storagePath.resolve(uuids.toString());
-            try {
-                Files.delete(imagePath);
-            } catch (IOException e) {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-            }
+    private void deleteFiles(String fullFilepath, Path storagePath){
+        Path imagePath = storagePath.resolve(fullFilepath);
+        try {
+            Files.delete(imagePath);
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    public void deleteFile(String filenameAndExtension, Path storagePath){
+        Path imagePath = storagePath.resolve(filenameAndExtension);
+        try {
+            Files.delete(imagePath);
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+    public void deleteFiles(List<String> filenamesAndExtensions, Path storagePath) {
+        filenamesAndExtensions.forEach((filenameAndExtension)->{
+            deleteFile(filenameAndExtension, storagePath);
         });
     }
 }

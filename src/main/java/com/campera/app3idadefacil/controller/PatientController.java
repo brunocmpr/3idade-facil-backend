@@ -67,4 +67,12 @@ public class PatientController {
         List<PatientDto> dtos = PatientMapper.convertToDto(patients);
         return ResponseEntity.ok(dtos);
     }
+
+    @DeleteMapping
+    @Operation(summary = "Delete patient by id")
+    public ResponseEntity<PatientDto> delete(@RequestParam Long id, Authentication authentication){
+        Patient patient = service.delete(id, (AppUser) authentication.getPrincipal());
+        PatientDto dto = PatientMapper.convertToDto(patient);
+        return ResponseEntity.ok(dto);
+    }
 }
