@@ -77,7 +77,8 @@ public class PatientService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Paciente não encontrado");
         }
         if(!patient.get().getAdmin().equals(user)){
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Você não tem permissão para deletar este paciente");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN
+                    , "Usuário não tem permissão para deletar este paciente");
         }
     }
 }

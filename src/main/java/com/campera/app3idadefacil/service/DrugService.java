@@ -6,11 +6,14 @@ import com.campera.app3idadefacil.model.Drug;
 import com.campera.app3idadefacil.model.Image;
 import com.campera.app3idadefacil.model.datatransfer.mapper.DrugMapper;
 import com.campera.app3idadefacil.model.datatransfer.form.DrugForm;
+import com.campera.app3idadefacil.repository.DrugPlanRepository;
 import com.campera.app3idadefacil.repository.DrugRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,8 @@ public class DrugService {
 
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private DrugPlanRepository drugPlanRepository;
 
     public List<Drug> findAllByMainCaretaker(AppUser appUser){
         return repository.findByCaretaker(appUser);
@@ -65,5 +70,28 @@ public class DrugService {
 
     public boolean caretakerManagesDrug(Drug drug, AppUser appUser) {
         return drug.getCaretaker().equals(appUser);
+    }
+
+    public Drug deleteDrug(Long id, AppUser user) {
+        Optional<Drug> drugOpt = repository.findById(id);
+        guardClausesDeleteDrug(user, drugOpt);
+        if(drugOpt.get().getDrugPlans()!= null && !drugOpt.get().getDrugPlans().isEmpty()){
+            drugPlanRepository.deleteAll(drugOpt.get().getDrugPlans());
+        }
+        if(drugOpt.get().getImages() != null && !drugOpt.get().getImages().isEmpty()){
+            imageService.deleteAll(drugOpt.get().getImages());
+        }
+        repository.delete(drugOpt.get());
+        return drugOpt.get();
+    }
+
+    private void guardClausesDeleteDrug(AppUser user, Optional<Drug> drugOpt) {
+        if(drugOpt.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Medicamento não encontrado");
+        }
+        if(!drugOpt.get().getCaretaker().equals(user)){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN
+                    , "Usuário não tem permissão para deletar este medicamento");
+        }
     }
 }

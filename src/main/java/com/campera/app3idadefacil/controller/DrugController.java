@@ -37,7 +37,6 @@ public class DrugController {
         return ResponseEntity.ok(drugDtos);
     }
 
-
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE } )
     @Operation(summary = "Register new drug")
     public ResponseEntity<DrugDto> createDrug(
@@ -46,6 +45,14 @@ public class DrugController {
             , Authentication authentication ){
         AppUser appUser = (AppUser) authentication.getPrincipal();
         Drug drug = service.createDrug(drugForm, appUser, images);
+        DrugDto drugDto = new DrugDto(drug);
+        return ResponseEntity.ok(drugDto);
+    }
+
+    @DeleteMapping
+    @Operation(summary = "Delete patient by id")
+    public ResponseEntity<DrugDto> deleteDrug(@RequestParam Long id, Authentication authentication){
+        Drug drug = service.deleteDrug(id, (AppUser) authentication.getPrincipal());
         DrugDto drugDto = new DrugDto(drug);
         return ResponseEntity.ok(drugDto);
     }
