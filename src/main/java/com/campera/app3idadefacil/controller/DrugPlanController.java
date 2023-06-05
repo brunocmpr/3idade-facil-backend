@@ -44,4 +44,13 @@ public class DrugPlanController {
         return ResponseEntity.ok(dtos);
 
     }
+
+    @DeleteMapping
+    @Operation(summary = "Delete drug plan by Id")
+    public ResponseEntity<DrugPlanDto> deleteDrugPlan(@RequestParam Long id, Authentication authentication){
+        AppUser appUser = (AppUser) authentication.getPrincipal();
+        DrugPlan plan = service.deleteDrugPlan(id, appUser);
+        DrugPlanDto dto = new DrugPlanDto(plan);
+        return ResponseEntity.ok(dto);
+    }
 }
