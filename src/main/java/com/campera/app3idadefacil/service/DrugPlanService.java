@@ -55,4 +55,17 @@ public class DrugPlanService {
     public List<DrugPlan> findAllByAdmin(AppUser appUser) {
         return repository.findAllByPatient_Admin(appUser);
     }
+
+    public DrugPlan deleteDrugPlan(Long id, AppUser appUser) {
+        Optional<DrugPlan> planOpt = repository.findById(id);
+        if (planOpt.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Plano de medicamento não encontrado.");
+        } else if (!patientService.caretakerManagesPatient(planOpt.get().getPatient(), appUser)){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Paciente não é gerenciado pelo cuidador.");
+        } else if (!drugService.caretakerManagesDrug(planOpt.get().getDrug(), appUser)){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Medicamento não é gerenciado pelo cuidador.");
+        }
+        repository.delete(planOpt.get());
+        return planOpt.get();
+    }
 }

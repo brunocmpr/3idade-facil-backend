@@ -31,6 +31,10 @@ public class Drug {
     @OneToMany(mappedBy = "drug") @Getter @Setter
     private List<Image> images;
 
+    @OneToMany(mappedBy = "drug") @Getter @Setter
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<DrugPlan> drugPlans;
+
     public Drug(AppUser caretaker, String name, String strength, String instructions) {
         this.caretaker = caretaker;
         this.name = name;

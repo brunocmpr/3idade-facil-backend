@@ -29,7 +29,7 @@ import java.util.stream.IntStream;
 @Service
 public class ImageService {
 
-    private final Path storagePath;
+    private final Path imageStoragePath;
     private final String rootImageStorageDir = "images/";
     public final String drugStorageDir = "drugs/";
     public final String patientStorageDir = "patients/";
@@ -40,10 +40,10 @@ public class ImageService {
 
     public ImageService(FilePersistenceService persistenceService) throws IOException {
         this.persistenceService = persistenceService;
-        this.storagePath = Paths.get(persistenceService.baseStorageDir + rootImageStorageDir);
+        this.imageStoragePath = Paths.get(persistenceService.baseStorageDir + rootImageStorageDir);
         childDirs.forEach((dir)->{
             try {
-                persistenceService.createDirectories(this.storagePath.resolve(dir));
+                persistenceService.createDirectories(this.imageStoragePath.resolve(dir));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -53,7 +53,7 @@ public class ImageService {
     public Resource getResource(Image image, AppUser user) {
         guardClausesGetResource(image, user);
 
-        Path imagePath = storagePath.resolve(image.getDirectoryAndFilenameAndExtension());
+        Path imagePath = imageStoragePath.resolve(image.getDirectoryAndFilenameAndExtension());
         Resource imageResource = null;
         try {
             imageResource = new UrlResource(imagePath.toUri());
@@ -74,7 +74,7 @@ public class ImageService {
     }
 
     public MediaType getMediaType(Image image){
-        Path imagePath = storagePath.resolve(image.getDirectoryAndFilenameAndExtension());
+        Path imagePath = imageStoragePath.resolve(image.getDirectoryAndFilenameAndExtension());
         String contentType = null;
         try {
             contentType = Files.probeContentType(imagePath);
@@ -98,7 +98,7 @@ public class ImageService {
 
     public List<Image> persistFilesAndGenerateNonPersistedImages(List<MultipartFile> multipartFiles
             , String childStorageDir) {
-        Path finalStoragePath = this.storagePath.resolve(childStorageDir);
+        Path finalStoragePath = this.imageStoragePath.resolve(childStorageDir);
         List<UUID> uuids = persistenceService.saveFilesCreateUuids(multipartFiles, finalStoragePath);
         List<Image> images = IntStream.range(0, uuids.size()).mapToObj(i -> new Image(uuids.get(i).toString()
                 , extractExtension(multipartFiles.get(i).getOriginalFilename())
@@ -142,5 +142,11 @@ public class ImageService {
 
     public Optional<Image> findById(Long id) {
         return repository.findById(id);
+    }
+
+    public void deleteAll(List<Image> images) {
+        persistenceService.deleteFiles(
+                images.stream().map(Image::getDirectoryAndFilenameAndExtension).toList(), this.imageStoragePath);
+        repository.deleteAll(images);
     }
 }
