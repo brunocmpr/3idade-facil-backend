@@ -46,13 +46,55 @@ public class PatientService {
         return savedPatient;
     }
 
+    public Patient update(Long id, PatientForm form, AppUser appUser, Optional<List<MultipartFile>> multipartFiles) {
+        Optional<Patient> patientOpt = repository.findById(id);
+        guardClausesUpdatePatient(patientOpt, appUser);
+
+        Patient patient = PatientMapper.updateFromForm(patientOpt.get(), form);
+
+        imageService.deleteAll(patient.getImages());
+        List<Image> images = new ArrayList<>();
+        if(multipartFiles.isPresent() && !multipartFiles.get().isEmpty()){
+            images = imageService.persistFilesAndGenerateNonPersistedImages(multipartFiles.get()
+                    , imageService.patientStorageDir);
+        }
+        images.forEach(image -> image.setPatient(patient));
+        List<Image> savedImages = imageService.saveAll(images);
+
+        patient.setImages(savedImages);
+        Patient savedPatient = repository.save(patient);
+        return savedPatient;
+    }
+
+    private void guardClausesUpdatePatient(Optional<Patient> patientOpt, AppUser appUser) {
+        if(patientOpt.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Paciente não encontrado");
+        }
+        if(!patientOpt.get().getAdmin().equals(appUser)){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN
+                    , "Usuário não tem permissão para atualizar este paciente");
+        }
+    }
+
     public List<Patient> findAllByAdmin(AppUser appUser) {
         List<Patient> patients = repository.findAllByAdmin(appUser);
         return patients;
     }
 
-    public Optional<Patient> findById(Long patientId) {
-        return repository.findById(patientId);
+    public Patient findById(Long patientId, AppUser principal) {
+        Optional<Patient> patientOpt = repository.findById(patientId);
+        guardClausesFindById(patientOpt, principal);
+        return patientOpt.get();
+    }
+
+    private void guardClausesFindById(Optional<Patient> patientOpt, AppUser principal) {
+        if(patientOpt.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Paciente não encontrado");
+        }
+        if(!patientOpt.get().getAdmin().equals(principal)){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN
+                    , "Usuário não tem permissão para visualizar este paciente");
+        }
     }
 
     public boolean caretakerManagesPatient(Patient patient, AppUser appUser) {

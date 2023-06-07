@@ -16,4 +16,11 @@ public class DrugMapper {
     public static List<DrugDto> toDtoList(List<Drug> drugs) {
         return drugs.stream().map(DrugDto::new).toList();
     }
+
+    public static Drug updateFromForm(Drug drug, DrugForm form) {
+        drug.setName(form.getName());
+        drug.setStrength(form.getStrength());
+        drug.setInstructions(form.getInstructions());
+        return drug;
+    }
 }

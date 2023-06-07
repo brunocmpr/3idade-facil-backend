@@ -25,4 +25,11 @@ public class PatientMapper {
     public static Patient convertFromForm(PatientForm form, AppUser admin){
         return new Patient(admin, form.getFirstName(), form.getLastName(), form.getNickname());
     }
+
+    public static Patient updateFromForm(Patient patient, PatientForm form){
+        patient.setFirstName(form.getFirstName());
+        patient.setLastName(form.getLastName());
+        patient.setNickname(form.getNickname());
+        return patient;
+    }
 }

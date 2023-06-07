@@ -4,8 +4,10 @@ import com.campera.app3idadefacil.exception.ExistingEntityException;
 import com.campera.app3idadefacil.model.AppUser;
 import com.campera.app3idadefacil.model.Drug;
 import com.campera.app3idadefacil.model.Image;
+import com.campera.app3idadefacil.model.Patient;
 import com.campera.app3idadefacil.model.datatransfer.mapper.DrugMapper;
 import com.campera.app3idadefacil.model.datatransfer.form.DrugForm;
+import com.campera.app3idadefacil.model.datatransfer.mapper.PatientMapper;
 import com.campera.app3idadefacil.repository.DrugPlanRepository;
 import com.campera.app3idadefacil.repository.DrugRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,8 +66,20 @@ public class DrugService {
         }
     }
 
-    public Optional<Drug> findById(Long drugId) {
-        return repository.findById(drugId);
+    public Drug findById(Long drugId, AppUser appUser) {
+        Optional<Drug> drugOpt = repository.findById(drugId);
+        guardClausesFindById(drugOpt, appUser);
+        return drugOpt.get();
+    }
+
+    private void guardClausesFindById(Optional<Drug> patientOpt, AppUser principal) {
+        if(patientOpt.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Medicamento não encontrado");
+        }
+        if(!patientOpt.get().getCaretaker().equals(principal)){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN
+                    , "Usuário não tem permissão para visualizar este medicamento");
+        }
     }
 
     public boolean caretakerManagesDrug(Drug drug, AppUser appUser) {
@@ -92,6 +106,36 @@ public class DrugService {
         if(!drugOpt.get().getCaretaker().equals(user)){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN
                     , "Usuário não tem permissão para deletar este medicamento");
+        }
+    }
+
+    public Drug updateDrug(Long id, DrugForm form, AppUser appUser, Optional<List<MultipartFile>> multipartFiles) {
+        Optional<Drug> drugOpt = repository.findById(id);
+        guardClausesUpdateDrug(drugOpt, appUser);
+
+        Drug drug = DrugMapper.updateFromForm(drugOpt.get(), form);
+
+        imageService.deleteAll(drug.getImages());
+        List<Image> images = new ArrayList<>();
+        if(multipartFiles.isPresent() && !multipartFiles.get().isEmpty()){
+            images = imageService.persistFilesAndGenerateNonPersistedImages(multipartFiles.get()
+                    , imageService.patientStorageDir);
+        }
+        images.forEach(image -> image.setDrug(drug));
+        List<Image> savedImages = imageService.saveAll(images);
+
+        drug.setImages(savedImages);
+        Drug savedDrug = repository.save(drug);
+        return savedDrug;
+    }
+
+    private void guardClausesUpdateDrug(Optional<Drug> drugOpt, AppUser appUser) {
+        if(drugOpt.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Medicamento não encontrado");
+        }
+        if(!drugOpt.get().getCaretaker().equals(appUser)){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN
+                    , "Usuário não tem permissão para atualizar este medicamento");
         }
     }
 }

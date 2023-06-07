@@ -28,6 +28,15 @@ public class DrugController {
     @Autowired
     private DrugService service;
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Get drug by id")
+    public ResponseEntity<DrugDto> getDrug(@PathVariable Long id, Authentication authentication){
+        AppUser appUser = (AppUser) authentication.getPrincipal();
+        Drug drug = service.findById(id, appUser);
+        DrugDto drugDto = new DrugDto(drug);
+        return ResponseEntity.ok(drugDto);
+    }
+
     @GetMapping
     @Operation(summary = "List drugs by admin")
     public ResponseEntity<List<DrugDto>> listDrugs(Authentication authentication){
@@ -45,6 +54,18 @@ public class DrugController {
             , Authentication authentication ){
         AppUser appUser = (AppUser) authentication.getPrincipal();
         Drug drug = service.createDrug(drugForm, appUser, images);
+        DrugDto drugDto = new DrugDto(drug);
+        return ResponseEntity.ok(drugDto);
+    }
+
+    @PutMapping(value = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE })
+    @Operation(summary = "Update drug")
+    public ResponseEntity<DrugDto> updateDrug(@PathVariable Long id
+            , @RequestPart(value = "drugForm", required = true) @Valid DrugForm drugForm
+            , @RequestPart(value = "images", required = false) @Size(max = 4) Optional<List<MultipartFile>> images
+            , Authentication authentication ){
+        AppUser appUser = (AppUser) authentication.getPrincipal();
+        Drug drug = service.updateDrug(id, drugForm, appUser, images);
         DrugDto drugDto = new DrugDto(drug);
         return ResponseEntity.ok(drugDto);
     }

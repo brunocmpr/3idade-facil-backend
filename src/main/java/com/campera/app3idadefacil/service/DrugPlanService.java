@@ -23,22 +23,21 @@ public class DrugPlanService {
     private PatientService patientService;
     @Transactional
     public DrugPlan createDrugPlan(DrugPlanForm planForm, AppUser appUser) {
-        Optional<Drug> drugOpt = drugService.findById(planForm.getDrugId());
-        Optional<Patient> patientOpt = patientService.findById(planForm.getPatientId());
-        guardClausesCreateDrugPlan(planForm, appUser, drugOpt, patientOpt);
-        DrugPlan plan = DrugPlanMapper.fromForm(planForm, patientOpt.get(), drugOpt.get());
+        Drug drug = drugService.findById(planForm.getDrugId(), appUser);
+        Patient patient = patientService.findById(planForm.getPatientId(), appUser);
+        guardClausesCreateDrugPlan(planForm, appUser, drug, patient);
+        DrugPlan plan = DrugPlanMapper.fromForm(planForm, patient, drug);
         return repository.save(plan);
     }
 
-    private void guardClausesCreateDrugPlan(DrugPlanForm planForm, AppUser appUser, Optional<Drug> drugOpt
-            , Optional<Patient> patientOpt) {
-        if(drugOpt.isEmpty()){
+    private void guardClausesCreateDrugPlan(DrugPlanForm planForm, AppUser appUser, Drug drug, Patient patient) {
+        if(drug == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Medicamento não encontrado.");
-        } else if (patientOpt.isEmpty()) {
+        } else if (patient == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Paciente não encontrado.");
-        } else if (!patientService.caretakerManagesPatient(patientOpt.get(), appUser)){
+        } else if (!patientService.caretakerManagesPatient(patient, appUser)){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Paciente não é gerenciado pelo cuidador.");
-        } else if (!drugService.caretakerManagesDrug(drugOpt.get(), appUser)){
+        } else if (!drugService.caretakerManagesDrug(drug, appUser)){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Medicamento não é gerenciado pelo cuidador.");
         } else if (planForm.getPosologyType().equals(PosologyType.CUSTOM)
                 && (planForm.getCustomPosologies() == null || planForm.getCustomPosologies().isEmpty())){

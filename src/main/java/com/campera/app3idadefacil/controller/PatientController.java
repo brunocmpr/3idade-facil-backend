@@ -31,7 +31,7 @@ public class PatientController {
     @Autowired
     PatientService service;
 
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE } )
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE })
     @Operation(summary = "Register new patient")
     public ResponseEntity<PatientDto> register(@RequestPart(value="form") @Valid PatientForm form,
                                                @RequestPart(value="images") Optional<List<MultipartFile>> images,
@@ -45,19 +45,21 @@ public class PatientController {
             return ResponseEntity.badRequest().build();
         }
     }
-    /*
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE } )
-    @Operation(summary = "Register new drug")
-    public ResponseEntity<DrugDto> createDrug(
-            @RequestPart(value = "drugForm", required = true) DrugForm drugForm
-            , @RequestPart(value = "images", required = false) @Size(max = 4) Optional<List<MultipartFile>> images
-            , Authentication authentication ){
-        AppUser appUser = (AppUser) authentication.getPrincipal();
-        Drug drug = service.createDrug(drugForm, appUser, images);
-        DrugDto drugDto = new DrugDto(drug);
-        return ResponseEntity.ok(drugDto);
+
+    @PutMapping(value = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE })
+    @Operation(summary = "Update patient")
+    public ResponseEntity<PatientDto> update(@PathVariable Long id, @RequestPart(value="form") @Valid PatientForm form,
+            @RequestPart(value="images") Optional<List<MultipartFile>> images, Authentication authentication) {
+        try {
+            AppUser appUser = (AppUser) authentication.getPrincipal();
+            Patient patient = service.update(id, form, appUser, images);
+            PatientDto dto = PatientMapper.convertToDto(patient);
+            return ResponseEntity.ok(dto);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
-     */
+
 
     @GetMapping
     @Operation(summary = "List patients by admin")
@@ -66,6 +68,14 @@ public class PatientController {
         List<Patient> patients = service.findAllByAdmin(appUser);
         List<PatientDto> dtos = PatientMapper.convertToDto(patients);
         return ResponseEntity.ok(dtos);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get patient by id")
+    public ResponseEntity<PatientDto> getById(@PathVariable Long id, Authentication authentication){
+        Patient patient = service.findById(id, (AppUser) authentication.getPrincipal());
+        PatientDto dto = PatientMapper.convertToDto(patient);
+        return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping
