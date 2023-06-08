@@ -53,4 +53,13 @@ public class DrugPlanController {
         DrugPlanDto dto = new DrugPlanDto(plan);
         return ResponseEntity.ok(dto);
     }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get drug plan by Id")
+    public ResponseEntity<DrugPlanDto> getDrugPlan(@PathVariable Long id, Authentication authentication){
+        AppUser appUser = (AppUser) authentication.getPrincipal();
+        DrugPlan plan = service.findById(id, appUser);
+        DrugPlanDto dto = new DrugPlanDto(plan);
+        return ResponseEntity.ok(dto);
+    }
 }
