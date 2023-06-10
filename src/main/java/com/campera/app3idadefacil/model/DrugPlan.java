@@ -32,6 +32,13 @@ public class DrugPlan {
     private UniformPosology uniformPosology;
     @OneToOne(mappedBy = "drugPlan", cascade = CascadeType.ALL) @Getter @Setter
     private WeeklyPosology weeklyPosology;
-    @OneToMany(mappedBy = "drugPlan", cascade = CascadeType.ALL) @Getter @Setter
+    @OneToMany(mappedBy = "drugPlan", cascade = CascadeType.ALL, orphanRemoval = true) @Getter @Setter
     private List<CustomPosology> customPosologies;
+
+    public boolean addCustomPosologies(List<CustomPosology> customPosology){
+        if (customPosologies == null){
+            customPosologies = new ArrayList<>();
+        }
+        return customPosologies.addAll(customPosology);
+    }
 }
